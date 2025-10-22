@@ -1,0 +1,9 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" rx="24" fill="#009A58"/>
+  <path d="M48 72h96l-12 72H60l-12-72z" fill="white"/>
+  <circle cx="72" cy="48" r="9" fill="white"/>
+  <circle cx="120" cy="48" r="9" fill="white"/>
+  <path d="M60 96h72M60 120h72" stroke="#009A58" stroke-width="4"/>
+  <text x="96" y="168" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="20" font-weight="bold">AGRIA</text>
+  <text x="96" y="184" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">ROUEN</text>
+</svg>

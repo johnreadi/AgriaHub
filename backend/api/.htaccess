@@ -1,0 +1,27 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /api/
+
+  # Laisser passer les fichiers/dossiers physiques
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Auth endpoints
+  RewriteRule ^auth/ping-db$ auth.php?action=ping-db [L,QSA]
+  RewriteRule ^auth/login$ auth.php?action=login [L,QSA]
+  RewriteRule ^auth/register$ auth.php?action=register [L,QSA]
+  RewriteRule ^auth/logout$ auth.php?action=logout [L,QSA]
+  RewriteRule ^auth/refresh$ auth.php?action=refresh [L,QSA]
+
+  # Users endpoints (basics)
+  RewriteRule ^users$ users.php [L,QSA]
+  RewriteRule ^users/([0-9]+)$ users.php?id=$1 [L,QSA]
+
+  # Menu & slides (si utilisés)
+  RewriteRule ^menu$ menu.php [L,QSA]
+  RewriteRule ^slides$ slides.php [L,QSA]
+
+  # Proxy Gemini
+  RewriteRule ^gemini/chat$ gemini.php?action=chat [L,QSA]
+</IfModule>

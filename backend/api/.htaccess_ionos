@@ -1,0 +1,47 @@
+# Configuration Apache pour API AGRIA - Compatible IONOS
+# Version optimisée pour hébergement mutualisé
+
+# Activation du module de réécriture
+RewriteEngine On
+
+# Sécurité de base - Masquer les fichiers sensibles
+<Files ~ "^\.">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Masquer les fichiers sensibles
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|sql)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Configuration CORS basique (si mod_headers disponible)
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+</IfModule>
+
+# Pas de cache pour les fichiers PHP
+<IfModule mod_headers.c>
+    <FilesMatch "\.(php)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </FilesMatch>
+</IfModule>
+
+# Réécriture d'URL simplifiée pour l'API
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ $1.php [L,QSA]
+
+# Routes API spécifiques
+RewriteRule ^auth/(.*)$ auth.php [L,QSA]
+RewriteRule ^users/(.*)$ users.php [L,QSA]
+RewriteRule ^conversations/(.*)$ conversations.php [L,QSA]
+RewriteRule ^newsletter/(.*)$ newsletter.php [L,QSA]
+
+# Interdire l'accès direct aux dossiers
+Options -Indexes

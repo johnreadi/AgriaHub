@@ -1,0 +1,168 @@
+# Docker Compose pour AGRIA Hub - Production
+version: '3.8'
+
+services:
+  # Frontend React (build statique servi par nginx)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      args:
+        - VITE_API_BASE_URL=/api
+        - NODE_ENV=production
+    container_name: agria-frontend
+    restart: unless-stopped
+    ports:
+      - "80:8080"
+      - "443:8080"
+    depends_on:
+      - backend
+    networks:
+      - agria-network
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`mobile.agriarouen.fr`)"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Backend PHP-FPM + Nginx
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: agria-backend
+    restart: unless-stopped
+    volumes:
+      - ./backend:/var/www/html:ro
+      - backend-logs:/var/www/html/api/logs
+      - backend-uploads:/var/www/html/api/uploads
+      - backend-cache:/var/www/html/api/cache
+    environment:
+      - PHP_ENV=production
+      - DB_HOST=database
+      - DB_NAME=${DB_NAME:-agria_production}
+      - DB_USER=${DB_USER:-agria_user}
+      - DB_PASS=${DB_PASS}
+      - JWT_SECRET=${JWT_SECRET}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - agria-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`mobile.agriarouen.fr`) && PathPrefix(`/api`)"
+      - "traefik.http.services.backend.loadbalancer.server.port=9000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/api/auth.php?action=ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Base de données MySQL
+  database:
+    image: mysql:8.0
+    container_name: agria-database
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+      - MYSQL_DATABASE=${DB_NAME:-agria_production}
+      - MYSQL_USER=${DB_USER:-agria_user}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_CHARSET=utf8mb4
+      - MYSQL_COLLATION=utf8mb4_unicode_ci
+    volumes:
+      - database-data:/var/lib/mysql
+      - ./config/mysql.cnf:/etc/mysql/conf.d/custom.cnf:ro
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    networks:
+      - agria-network
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASS}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Redis pour le cache (optionnel)
+  redis:
+    image: redis:7-alpine
+    container_name: agria-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+    networks:
+      - agria-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Traefik pour le reverse proxy (optionnel, pour Dokploy)
+  traefik:
+    image: traefik:v3.0
+    container_name: agria-traefik
+    restart: unless-stopped
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=admin@agriarouen.fr"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-letsencrypt:/letsencrypt
+    networks:
+      - agria-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.agriarouen.fr`)"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+
+# Volumes persistants
+volumes:
+  database-data:
+    driver: local
+  redis-data:
+    driver: local
+  backend-logs:
+    driver: local
+  backend-uploads:
+    driver: local
+  backend-cache:
+    driver: local
+  traefik-letsencrypt:
+    driver: local
+
+# Réseau
+networks:
+  agria-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

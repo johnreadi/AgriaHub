@@ -1,0 +1,25 @@
+Options -MultiViews
+RewriteEngine On
+
+# Redirection des requêtes API vers les fichiers .php correspondants (multi-segments)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/([^/]+)/([^/]+)/?$ api/$1.php?action=$2 [L,QSA]
+RewriteRule ^api/([^/]+)/?$ api/$1.php [L,QSA]
+
+# Redirection par défaut vers index.html pour les routes frontend
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.html [L]
+
+# Désactiver cache agressif pour Service Worker, Manifest et icônes PWA
+<IfModule mod_headers.c>
+  <FilesMatch "^(sw\.js|manifest\.json)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+  <FilesMatch "^icons/.*\.(png|svg)$">
+    Header set Cache-Control "public, max-age=3600"
+  </FilesMatch>
+</IfModule>

@@ -1,0 +1,99 @@
+# Fichiers d'environnement et secrets
+.env
+.env.local
+.env.production
+.env.development
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Dépendances
+node_modules/
+vendor/
+composer.lock
+package-lock.json
+yarn.lock
+
+# Cache et builds
+.cache/
+dist/
+build/
+.next/
+.nuxt/
+.vuepress/dist/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE et éditeurs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.atom/
+.brackets.json
+
+# Base de données
+*.db
+*.sqlite
+*.sqlite3
+database.db
+
+# Uploads et médias
+uploads/
+media/
+storage/
+
+# Certificats SSL
+*.pem
+*.key
+*.crt
+*.p12
+
+# Backups
+backups/
+*.backup
+*.bak
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# PHP
+composer.phar
+/vendor/
+.phpunit.result.cache
+
+# Node.js
+npm-debug.log
+yarn-error.log
+
+# Dokploy spécifique
+dokploy-data/
+.dokploy/
+
+# Fichiers de configuration sensibles
+config/database.php
+config/secrets.php

@@ -1,0 +1,8 @@
+<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="72" height="72" rx="8" fill="#009A58"/>
+  <path d="M18 27h36l-4 27H22l-4-27z" fill="white"/>
+  <circle cx="27" cy="18" r="4" fill="white"/>
+  <circle cx="45" cy="18" r="4" fill="white"/>
+  <path d="M22 36h28M22 45h28" stroke="#009A58" stroke-width="2"/>
+  <text x="36" y="63" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8" font-weight="bold">AGRIA</text>
+</svg>
