@@ -1,0 +1,24 @@
+# Configuration Nixpacks pour AgriaHub
+# DÉSACTIVE la détection automatique et force Docker Compose
+
+# Désactive la détection automatique de Node.js
+[providers]
+node = false
+npm = false
+
+# Force l'utilisation de Docker uniquement
+[phases.setup]
+nixPkgs = ["docker", "docker-compose"]
+
+[phases.build]
+cmds = [
+  "echo 'Skipping Node.js build - using Docker Compose'",
+  "docker-compose --version"
+]
+
+[phases.start]
+cmd = "docker-compose up -d --build"
+
+[variables]
+NODE_ENV = "production"
+NIXPACKS_NO_CACHE = "1"
