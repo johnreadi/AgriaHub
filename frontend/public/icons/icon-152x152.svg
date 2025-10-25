@@ -1,9 +1,0 @@
-<svg width="152" height="152" viewBox="0 0 152 152" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="152" height="152" rx="19" fill="#009A58"/>
-  <path d="M38 57h76l-9.5 57H47.5l-9.5-57z" fill="white"/>
-  <circle cx="57" cy="38" r="7.5" fill="white"/>
-  <circle cx="95" cy="38" r="7.5" fill="white"/>
-  <path d="M47.5 76h57M47.5 95h57" stroke="#009A58" stroke-width="3"/>
-  <text x="76" y="133" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="17" font-weight="bold">AGRIA</text>
-  <text x="76" y="147" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10">ROUEN</text>
-</svg>

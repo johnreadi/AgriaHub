@@ -1,0 +1,9 @@
+# Interdire l'accès direct aux fichiers de logs
+Order Deny,Allow
+Deny from all
+
+# Permettre seulement l'accès depuis le serveur local
+<Files "*.log">
+    Order Deny,Allow
+    Deny from all
+</Files>

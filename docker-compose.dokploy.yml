@@ -1,0 +1,66 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: AgriaHub/Dockerfile.frontend
+      args:
+        - VITE_API_BASE_URL=/api
+    container_name: agria-frontend
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - agria-network
+
+  backend:
+    build:
+      context: AgriaHub/IONOS
+      dockerfile: Dockerfile.backend
+    container_name: agria-backend
+    environment:
+      - PHP_ENV=production
+      - DB_HOST=database
+      - DB_NAME=${DB_NAME:-agria_production}
+      - DB_USER=${DB_USER:-agria_user}
+      - DB_PASS=${DB_PASS}
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - database
+    networks:
+      - agria-network
+
+  database:
+    image: mysql:8.0
+    container_name: agria-database
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+      - MYSQL_DATABASE=${DB_NAME:-agria_production}
+      - MYSQL_USER=${DB_USER:-agria_user}
+      - MYSQL_PASSWORD=${DB_PASS}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - AgriaHub/database.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - AgriaHub/demo_data.sql:/docker-entrypoint-initdb.d/02-data.sql:ro
+    ports:
+      - "3306:3306"
+    networks:
+      - agria-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: agria-redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - agria-network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  agria-network:
+    driver: bridge

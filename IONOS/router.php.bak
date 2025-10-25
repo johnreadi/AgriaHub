@@ -1,0 +1,60 @@
+<?php
+// Routeur personnalisé pour le serveur de développement PHP
+
+$request_uri = $_SERVER['REQUEST_URI'];
+$request_method = $_SERVER['REQUEST_METHOD'];
+
+// Supprimer les paramètres de requête
+$path = parse_url($request_uri, PHP_URL_PATH);
+
+// Gérer les requêtes API
+if (strpos($path, '/api/') === 0) {
+    // Extraire le chemin API
+    $api_path = substr($path, 5); // Enlever '/api/'
+    
+    if ($api_path === 'login' || $api_path === 'login.php') {
+        include __DIR__ . '/api/login.php';
+        return;
+    } elseif ($api_path === 'auth/login' || $api_path === 'auth/login.php') {
+        include __DIR__ . '/api/login.php';
+        return;
+    } elseif ($api_path === 'test_simple.php') {
+        include __DIR__ . '/api/test_simple.php';
+        return;
+    } elseif (strpos($api_path, 'admin') === 0) {
+        // Requêtes admin
+        include __DIR__ . '/api/admin.php';
+        return;
+    } elseif (strpos($api_path, 'users') === 0) {
+        // Requêtes utilisateurs
+        include __DIR__ . '/api/users.php';
+        return;
+    } elseif (strpos($api_path, 'content') === 0) {
+        // Requêtes contenu
+        include __DIR__ . '/api/content.php';
+        return;
+    } else {
+        // API non trouvée
+        http_response_code(404);
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'API endpoint not found']);
+        return;
+    }
+}
+
+// Gérer les fichiers statiques
+$file_path = __DIR__ . $path;
+
+// Si c'est un fichier qui existe, le servir
+if (is_file($file_path)) {
+    return false; // Laisser le serveur PHP gérer le fichier
+}
+
+// Pour toutes les autres routes, servir index.html (SPA)
+if (file_exists(__DIR__ . '/index.html')) {
+    include __DIR__ . '/index.html';
+} else {
+    http_response_code(404);
+    echo "404 - Page not found";
+}
+?>
