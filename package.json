@@ -5,24 +5,13 @@
   "main": "server.js",
   "private": true,
   "scripts": {
-    "start": "node server.js",
-    "build": "npm run build:frontend",
-    "build:frontend": "cd frontend && npm ci && npm run build",
-    "deploy": "node deploy.js",
-    "postinstall": "npm run build:frontend",
-    "deploy:dokploy": "bash scripts/deploy-dokploy.sh",
-    "setup": "node scripts/setup.js",
-    "test": "node scripts/test-deployment.js",
-    "backup": "bash scripts/backup.sh",
-    "logs": "docker-compose logs -f",
-    "status": "docker-compose ps",
-    "stop": "docker-compose down",
-    "restart": "docker-compose restart",
-    "heroku-postbuild": "npm run build:frontend"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 80"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/votre-username/agria-hub.git"
+    "url": "https://github.com/johnreadi/AgriaHub.git"
   },
   "keywords": [
     "agria",
@@ -38,10 +27,12 @@
     "npm": ">=9.0.0"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "http-proxy-middleware": "^2.0.6",
-    "chalk": "^5.3.0",
-    "inquirer": "^9.2.12",
-    "ora": "^7.0.1"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.8"
   }
 }
