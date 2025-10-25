@@ -1,0 +1,80 @@
+/* Styles de base pour AGRIA ROUEN */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+/* Variables CSS personnalisées */
+:root {
+  --agria-green: #009A58;
+  --agria-green-light: #E6F5F0;
+  --agria-green-dark: #00874E;
+}
+
+/* Styles globaux */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.6;
+  color: #1f2937;
+  background-color: #f9fafb;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
+/* Styles pour les boutons */
+.btn-primary {
+  background-color: var(--agria-green);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--agria-green-dark);
+  transform: translateY(-1px);
+}
+
+/* Styles pour les animations */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Styles responsifs */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Correctif visibilité overlay mobile: réduire l'opacité et neutraliser les interactions pour ne plus masquer le contenu et les boutons */
+@media (max-width: 768px) {
+  .fixed.inset-0.bg-black.bg-opacity-50.z-30 {
+    opacity: 0.1 !important;
+    pointer-events: none !important;
+  }
+}
+
+/* Assurer que les Floating Action Buttons restent parfaitement visibles */
+.fixed.bottom-24.right-6.z-50,
+.md\:bottom-6.right-6.z-50 {
+  opacity: 1 !important;
+  visibility: visible !important;
+}

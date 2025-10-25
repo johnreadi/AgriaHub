@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="64" fill="#009A58"/>
+  <path d="M128 192h256l-32 192H160l-32-192z" fill="white"/>
+  <circle cx="192" cy="128" r="24" fill="white"/>
+  <circle cx="320" cy="128" r="24" fill="white"/>
+  <path d="M160 256h192M160 320h192" stroke="#009A58" stroke-width="8"/>
+  <text x="256" y="448" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="48" font-weight="bold">AGRIA</text>
+  <text x="256" y="480" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24">ROUEN</text>
+  <text x="256" y="500" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16">Restaurant Administratif</text>
+</svg>
