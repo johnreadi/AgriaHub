@@ -15,7 +15,7 @@ COPY frontend/tsconfig.json ./
 COPY frontend/vite.config.ts ./
 
 # Installer toutes les dépendances (y compris devDependencies pour le build)
-RUN npm ci --silent
+RUN npm install --silent
 
 # Copier le code source
 COPY frontend/ ./
