@@ -1,0 +1,16 @@
+# Force Nixpacks commands for the frontend app
+[phases.install]
+cmds = [
+  "npm install --no-audit --no-fund --legacy-peer-deps"
+]
+
+[phases.build]
+cmds = [
+  "npm run build"
+]
+
+[phases.start]
+cmd = "npm start"
+
+[variables]
+NIXPACKS_NODE_VERSION = "20"
