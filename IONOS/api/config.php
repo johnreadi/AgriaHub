@@ -2,6 +2,20 @@
 // API Configuration for IONOS deployment
 // NOTE: This file contains server-side credentials; DO NOT expose any value on the frontend.
 
+// CORS: allow frontend origin and handle preflight early
+$allowedOrigin = getenv('ALLOWED_ORIGIN') ?: 'https://mobile.agriarouen.fr';
+if (!headers_sent()) {
+    header('Access-Control-Allow-Origin: ' . $allowedOrigin);
+    header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    header('Access-Control-Allow-Credentials: true');
+}
+if (isset($_SERVER['REQUEST_METHOD']) && strtoupper($_SERVER['REQUEST_METHOD']) === 'OPTIONS') {
+    // Preflight request: answer with no content
+    http_response_code(204);
+    exit();
+}
+
 // MySQL credentials (IONOS)
 $DB_HOST = 'db5018629781.hosting-data.io';
 $DB_NAME = 'dbs14768810';

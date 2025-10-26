@@ -8,6 +8,7 @@
     "start": "serve -s dist -l 80",
     "dev": "vite",
     "build": "vite build",
+    "prestart": "vite build",
     "preview": "vite preview --port 80"
   },
   "repository": {
