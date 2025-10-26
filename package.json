@@ -5,6 +5,7 @@
   "main": "server.js",
   "private": true,
   "scripts": {
+    "start": "serve -s dist -l 80",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 80"
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
     "typescript": "^5.6.3",
-    "vite": "^5.4.8"
+    "vite": "^5.4.8",
+    "serve": "^14.2.1"
   }
 }
