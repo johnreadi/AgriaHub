@@ -1,7 +1,7 @@
 {
   "name": "agria-hub-production",
   "version": "1.0.0",
-  "description": "AgriaHub - Plateforme de gestion agricole",
+  "description": "Restaut Administratif de ROUEN",
   "main": "server.js",
   "private": true,
   "scripts": {
