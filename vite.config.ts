@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
-      base: '/agriarouen/',
+      base: '/',
       server: {
         port: 3000,
         host: '0.0.0.0',
@@ -36,21 +36,7 @@ export default defineConfig(({ mode }) => {
         },
         dedupe: ['react', 'react-dom']
       },
-      build: {
-        // Optimisations de build pour les performances
-        rollupOptions: {
-          output: {
-            manualChunks: {
-              // Séparer les dépendances vendor pour un meilleur cache
-              vendor: ['react', 'react-dom'],
-              // Séparer les icônes pour un chargement optimisé
-              icons: ['./components/icons/Icons']
-            }
-          }
-        },
-        // Optimiser la taille des chunks
-        chunkSizeWarningLimit: 1000
-      },
+      // build: {} // configuration par défaut de Vite
       // Optimisations pour le développement
       optimizeDeps: {
         include: ['react', 'react-dom']
