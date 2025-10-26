@@ -49,15 +49,7 @@ export default defineConfig(({ mode }) => {
           }
         },
         // Optimiser la taille des chunks
-        chunkSizeWarningLimit: 1000,
-        // Activer la minification
-        minify: 'terser',
-        terserOptions: {
-          compress: {
-            drop_console: mode === 'production',
-            drop_debugger: mode === 'production'
-          }
-        }
+        chunkSizeWarningLimit: 1000
       },
       // Optimisations pour le développement
       optimizeDeps: {
